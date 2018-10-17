@@ -74,7 +74,6 @@ IntersectionObserver.prototype.unobserve = function (elem) {
 
 IntersectionObserver.prototype.disconnect = function () {
     this.elements = [];
-
     // todo perhaps clean up event listeners?
 };
 
@@ -117,7 +116,7 @@ IntersectionObserver.prototype.check = function (elem) {
         this.viewport.viewportW = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
         this.viewport.viewportH = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
-        // update secondary viewport settings
+        // update secondary viewport settings, iff needed
         if (this.options.secondScrollArea) {
             let rectViewport = this.options.secondScrollArea.getBoundingClientRect();
             this.secondaryViewport.viewportX = rectViewport.left;
@@ -132,24 +131,21 @@ IntersectionObserver.prototype.check = function (elem) {
                 && elem !== element) {
                 //do nothing
             } else {
-                let rect = element.getBoundingClientRect();
+                let rectangle = element.getBoundingClientRect();
 
                 // first check is the element in in the browser viewport
-                let intersectionRatio = this.calculateRatio(this.viewport, rect);
+                let intersectionRatio = this.calculateRatio(this.viewport, rectangle);
 
-                if (this.options.secondScrollArea) {
-
+                if (this.options.secondScrollArea && intersectionRatio > 0) {
                     // there is a second area, for example if items are hidden in case of carrousel
                     // check is the items are in the secondary viewport...
                     // this is relative to the selected area, so we need first to check the actual viewport.
-                    if (intersectionRatio > 0) {
-                        intersectionRatio = this.calculateRatio(this.secondaryViewport, rect);
-                    }
+                    intersectionRatio = this.calculateRatio(this.secondaryViewport, rectangle);
                 }
 
                 if (intersectionRatio > 0) {
                     entries.push({
-                        boundingClientRect: rect,
+                        boundingClientRect: rectangle,
                         intersectionRatio: intersectionRatio,
                         // intersectionRect: null,
                         isIntersecting: true,
