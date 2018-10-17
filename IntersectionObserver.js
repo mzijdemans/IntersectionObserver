@@ -16,7 +16,7 @@ IntersectionObserver = function (callback, options) {
 
         // the next options are not part of the original API, but we noticed that we needed this to make sure
         // this feature behaved correctly using widgets, like carrousels
-
+        // todo these addtional triggers should be a list
         additionTriggerEvent: false,        // example: 'scroll'
         additionTriggerEventObject: false,  // example: the Flickity object
         additionTriggerEventMethod: false,  // example: 'on' or 'addEventListener'
