@@ -83,16 +83,29 @@ IntersectionObserver.prototype.takeRecords = function (elem) {
 };
 
 IntersectionObserver.prototype.calculateRatio = function (viewport, rect) {
-
+/*       ___________________
+       ^|                   |^
+       ^|                   |^
+       ^|<------right------>|^
+    top^|         __________|^__________
+        |<-left->|          |^          |
+        |        |          |^          |
+        |________|__________|^bottom    |
+                 |                      |
+                 |                      |
+                 |                      |
+                 |______________________|
+*/
     //determine the coordinates of the intersection
-    let left    = Math.max(viewport.viewportX, rect.left);
-    let right   = Math.min(viewport.viewportX + viewport.viewportW, rect.left + rect.width);
-    let bottom  = Math.max(viewport.viewportY, rect.top);
-    let top     = Math.min(viewport.viewportY + viewport.viewportH, rect.top + rect.height);
+    let left    = Math.max(viewport.viewportX, rect.left); // distance from left side, of the left si
+    let right   = Math.min(viewport.viewportX + viewport.viewportW, rect.left + rect.width); //
+
+    let top  = Math.max(viewport.viewportY, rect.top);
+    let bottom     = Math.min(viewport.viewportY + viewport.viewportH, rect.top + rect.height);
 
     // determine dimensions of the intersection
     let intersectionWidth = Math.max(0, right - left);
-    let intersectionHeight = Math.max(0, top - bottom);
+    let intersectionHeight = Math.max(0, bottom - top);
 
     //calculate the area of the element
     let elementArea = rect.width * rect.height;
